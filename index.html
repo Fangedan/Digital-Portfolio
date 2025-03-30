@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Portfolio</title>
+
+    <!-- Firebase SDK for modular usage -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCclAABJ4ACEbg20e_xKqyw89_iB0DQA8E",
+            authDomain: "digital-portfolio-f121e.firebaseapp.com",
+            projectId: "digital-portfolio-f121e",
+            storageBucket: "digital-portfolio-f121e.firebasestorage.app",
+            messagingSenderId: "695294042895",
+            appId: "1:695294042895:web:b706114f510b2977c4d47a",
+            measurementId: "G-VGBV0LV32R"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        // Initialize Firestore
+        const db = getFirestore(app);
+
+        function updateVisitCount() {
+            const docRef = doc(db, "visits", "counter");
+
+            getDoc(docRef).then((docSnap) => {
+                if (docSnap.exists()) {
+                    let currentCount = docSnap.data().count;
+                    updateDoc(docRef, { count: currentCount + 1 }).then(() => {
+                        document.getElementById('visit-counter').innerText = `Page visits: ${currentCount + 1}`;
+                    });
+                } else {
+                    setDoc(docRef, { count: 1 }).then(() => {
+                        document.getElementById('visit-counter').innerText = `Page visits: 1`;
+                    });
+                }
+            });
+        }
+
+        updateVisitCount(); // Initialize visit count on load
+    </script>
+
+    <style>
+        /* Adjusted centering to start near the top */
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center; /* Horizontal centering */
+            align-items: flex-start; /* Aligns the container near the top */
+            background-color: #000000; /* Light pink background */
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center; /* Center text inside */
+        }
+
+        .glow {
+            color: #ff80bf; /* Pink color */
+            text-shadow: 0 0 1px #ff66a3, 0 0 2px #ff3385, 0 0 3px #ff0066; /* Reduced blur and spread for a softer glow */
+            font-weight: bold;
+        }
+
+        .pink-button {
+            background-color: #ff80bf;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .pink-button:hover {
+            background-color: #ff66a3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hello <span class="glow">World</span> !!!</h1>
+        <h2>(3/7/2025)</h2>
+        <p id="visit-counter">Page visits: 0</p>
+    </div>
+
+    <script>
+        function updateTimeSince() {
+            const targetDate = new Date('2025-02-28T23:59:59'); // Date: 2/28/2025 at 11:59:59 PM
+            const now = new Date();
+            const diff = now - targetDate; // Difference in milliseconds
+
+            // Time calculations
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            const months = Math.floor(days / 30); // Approximating 30 days per month
+            const years = Math.floor(months / 12); // Approximating 12 months per year
+
+            // Formatting output
+            document.getElementById('time-since').innerHTML = `Time since (2/28/2025 - 11:59:59 PM):  ${years} years, ${months % 12} months, ${days % 30} days, ${hours % 24} hours, ${minutes % 60} minutes, and ${seconds % 60} seconds.`;
+
+            setTimeout(updateTimeSince, 1000); // Update every second
+        }
+
+        updateTimeSince(); // Initialize clock on load
+    </script>
+</body>
+</html>
